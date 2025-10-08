@@ -392,6 +392,82 @@ input:focus {
     font-size: 0.85rem;
 }
 
+.modal-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(15, 23, 42, 0.65);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1.5rem;
+    z-index: 1000;
+}
+
+.modal-content {
+    position: relative;
+    max-width: min(520px, 100%);
+    background: var(--card-bg);
+    border-radius: 24px;
+    padding: 2.25rem 2.5rem;
+    box-shadow: 0 35px 60px -35px rgba(15, 23, 42, 0.65);
+    text-align: left;
+}
+
+.modal-content h3 {
+    margin-top: 0;
+    margin-bottom: 1rem;
+    font-size: 1.45rem;
+    color: var(--secondary);
+}
+
+.modal-body-text {
+    margin-bottom: 1rem;
+    color: var(--secondary);
+    font-size: 1.05rem;
+}
+
+.modal-content .celebration-highlights {
+    margin: 0 0 1.5rem 1.25rem;
+    padding: 0;
+    list-style: disc;
+    color: var(--secondary);
+}
+
+.modal-content .celebration-highlights li {
+    margin-bottom: 0.75rem;
+    line-height: 1.5;
+}
+
+.modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.75rem;
+}
+
+.modal-actions button {
+    margin: 0;
+}
+
+.modal-close {
+    position: absolute;
+    top: 0.9rem;
+    right: 0.9rem;
+    border: none;
+    background: transparent;
+    font-size: 2rem;
+    line-height: 1;
+    color: var(--muted);
+    cursor: pointer;
+}
+
+.modal-close:hover {
+    color: var(--secondary);
+}
+
+body.modal-open {
+    overflow: hidden;
+}
+
 @media (prefers-reduced-motion: reduce) {
     *, *::before, *::after {
         animation-duration: 0.01ms !important;

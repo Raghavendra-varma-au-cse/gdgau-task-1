@@ -78,6 +78,25 @@
         </section>
     </main>
 
+    <div id="celebration-modal" class="modal-backdrop hidden" role="dialog" aria-modal="true" aria-labelledby="celebration-title">
+        <div class="modal-content">
+            <button type="button" class="modal-close" data-close-modal aria-label="Close celebration message">&times;</button>
+            <h3 id="celebration-title">Cyber Sleuth Confirmed</h3>
+            <p id="celebration-message" class="modal-body-text">
+                Success! Welcome to the GDGoC AU Cybersecurity — your curiosity and focus just cracked the encoded breadcrumb.
+                You followed the investigation trail, decoded the payload, and proved you can keep calm under simulated pressure.
+            </p>
+            <ul class="celebration-highlights">
+                <li><strong>Signal boosted:</strong> Share one actionable phishing tip with a teammate today.</li>
+                <li><strong>Stay sharp:</strong> Re-run the simulation with friends and compare what details they miss.</li>
+                <li><strong>Keep learning:</strong> Bookmark at least one security feed or podcast to stay ahead of attackers.</li>
+            </ul>
+            <div class="modal-actions">
+                <button type="button" class="primary" data-close-modal>Back to the guide</button>
+            </div>
+        </div>
+    </div>
+
     <footer class="site-footer">
         <p>&copy; <span id="year"></span> GDGoC Andhra University &mdash; Cybersecurity Domain.</p>
     </footer>
@@ -98,11 +117,25 @@
             const feedbackEl = document.getElementById('decode-feedback');
             const targetPhrase = 'Welcome to the GDGoC AU Cybersecurity';
 
+            function normalizePhrase(raw) {
+                return (raw || '')
+                    .normalize('NFKC')
+                    .replace(/\s+/g, ' ')
+                    .trim()
+                    .toLowerCase();
+            }
+
+            const normalizedTarget = normalizePhrase(targetPhrase);
+
+            const celebrationModal = document.getElementById('celebration-modal');
+            const celebrationMessageEl = document.getElementById('celebration-message');
+            const celebrationCloseButtons = celebrationModal ? celebrationModal.querySelectorAll('[data-close-modal]') : [];
+
             function setFeedback(message, state) {
                 if (!feedbackEl) {
                     return;
                 }
-                feedbackEl.textContent = message;
+                feedbackEl.innerHTML = message;
                 feedbackEl.classList.remove('muted', 'success', 'error');
                 if (state === 'success') {
                     feedbackEl.classList.add('decode-feedback', 'success');
@@ -113,6 +146,47 @@
                 }
             }
 
+            function openCelebrationModal(messageHtml) {
+                if (!celebrationModal) {
+                    return;
+                }
+                if (celebrationMessageEl && messageHtml) {
+                    celebrationMessageEl.innerHTML = messageHtml;
+                }
+                celebrationModal.classList.remove('hidden');
+                document.body.classList.add('modal-open');
+                const focusTarget = celebrationModal.querySelector('[data-close-modal]');
+                if (focusTarget) {
+                    focusTarget.focus();
+                }
+            }
+
+            function closeCelebrationModal() {
+                if (!celebrationModal) {
+                    return;
+                }
+                celebrationModal.classList.add('hidden');
+                document.body.classList.remove('modal-open');
+            }
+
+            celebrationCloseButtons.forEach((button) => {
+                button.addEventListener('click', closeCelebrationModal);
+            });
+
+            if (celebrationModal) {
+                celebrationModal.addEventListener('click', (event) => {
+                    if (event.target === celebrationModal) {
+                        closeCelebrationModal();
+                    }
+                });
+            }
+
+            document.addEventListener('keydown', (event) => {
+                if (event.key === 'Escape' && celebrationModal && !celebrationModal.classList.contains('hidden')) {
+                    closeCelebrationModal();
+                }
+            });
+
             decodeForm.addEventListener('submit', (event) => {
                 event.preventDefault();
                 const value = (decodeInput.value || '').trim();
@@ -122,13 +196,13 @@
                     return;
                 }
 
-                const matches = value.localeCompare(targetPhrase, undefined, {
-                    sensitivity: 'accent',
-                    usage: 'search'
-                }) === 0;
+                const normalizedValue = normalizePhrase(value);
+                const matches = normalizedValue.length > 0 && normalizedValue === normalizedTarget;
 
                 if (matches) {
-                    setFeedback('Success! Welcome to the GDGoC AU Cybersecurity — keep exploring, investigator.', 'success');
+                    const successMessage = '<strong>Success!</strong> Welcome to the GDGoC AU Cybersecurity — keep exploring, investigator. You cracked the encoded breadcrumb, traced every clue, and proved you can out-think social engineers when the pressure is on. Keep paying that curiosity forward!';
+                    setFeedback(successMessage, 'success');
+                    openCelebrationModal(successMessage);
                 } else {
                     setFeedback('That doesn’t match the hidden message yet. Double-check your decoding steps and try again.', 'error');
                 }
