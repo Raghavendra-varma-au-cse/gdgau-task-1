@@ -129,7 +129,7 @@
 
             const celebrationModal = document.getElementById('celebration-modal');
             const celebrationMessageEl = document.getElementById('celebration-message');
-            const celebrationCloseButtons = celebrationModal ? celebrationModal.querySelectorAll('[data-close-modal]') : [];
+            const celebrationCloseButtons = celebrationModal ? Array.from(celebrationModal.querySelectorAll('[data-close-modal]')) : [];
 
             function setFeedback(message, state) {
                 if (!feedbackEl) {
@@ -154,6 +154,7 @@
                     celebrationMessageEl.innerHTML = messageHtml;
                 }
                 celebrationModal.classList.remove('hidden');
+                celebrationModal.setAttribute('aria-hidden', 'false');
                 document.body.classList.add('modal-open');
                 const focusTarget = celebrationModal.querySelector('[data-close-modal]');
                 if (focusTarget) {
@@ -162,27 +163,36 @@
             }
 
             function closeCelebrationModal() {
-                if (!celebrationModal) {
-                    return;
-                }
                 celebrationModal.classList.add('hidden');
+                celebrationModal.setAttribute('aria-hidden', 'true');
                 document.body.classList.remove('modal-open');
+                // Return focus to form input
+                setTimeout(function() {
+                    if (decodeInput) {
+                        decodeInput.focus();
+                    }
+                }, 100);
             }
 
-            celebrationCloseButtons.forEach((button) => {
-                button.addEventListener('click', closeCelebrationModal);
+            // Initialize modal as hidden on page load
+            celebrationModal.classList.add('hidden');
+            celebrationModal.setAttribute('aria-hidden', 'true');
+            document.body.classList.remove('modal-open');
+
+            // Event delegation for all modal close interactions
+            celebrationModal.addEventListener('click', function(event) {
+                // Close if clicking backdrop or any element with data-close-modal
+                if (event.target === celebrationModal || event.target.hasAttribute('data-close-modal')) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                    closeCelebrationModal();
+                }
             });
 
-            if (celebrationModal) {
-                celebrationModal.addEventListener('click', (event) => {
-                    if (event.target === celebrationModal) {
-                        closeCelebrationModal();
-                    }
-                });
-            }
-
-            document.addEventListener('keydown', (event) => {
-                if (event.key === 'Escape' && celebrationModal && !celebrationModal.classList.contains('hidden')) {
+            // Global escape key handler
+            document.addEventListener('keydown', function(event) {
+                if (event.key === 'Escape' && !celebrationModal.classList.contains('hidden')) {
+                    event.preventDefault();
                     closeCelebrationModal();
                 }
             });
