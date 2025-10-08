@@ -22,7 +22,7 @@ const resultLocationEl = document.getElementById('result-location');
 const resultNetworkEl = document.getElementById('result-network');
 const resultTimezoneEl = document.getElementById('result-timezone');
 const resultUserAgentEl = document.getElementById('result-user-agent');
-const resultScreenEl = document.getElementById('result-screen');
+const resultScreenValueEl = document.getElementById('result-screen-value');
 const resultLanguagesEl = document.getElementById('result-languages');
 const resultCoresEl = document.getElementById('result-cores');
 const resultDntEl = document.getElementById('result-dnt');
@@ -181,7 +181,7 @@ async function collectContext() {
     setText(resultUserAgentEl, cachedContext.userAgent);
     setText(resultNetworkEl, cachedContext.network);
     setText(resultTimezoneEl, cachedContext.timezoneDisplay);
-    setText(resultScreenEl, cachedContext.screen);
+    setText(resultScreenValueEl, cachedContext.screen);
     setText(resultLanguagesEl, cachedContext.languages);
     setText(resultCoresEl, cachedContext.cores);
     setText(resultDntEl, cachedContext.dnt);
@@ -223,7 +223,7 @@ if (phishForm) {
         setText(resultNetworkEl, cachedContext.network);
         setText(resultTimezoneEl, cachedContext.timezoneDisplay);
         setText(resultUserAgentEl, cachedContext.userAgent);
-        setText(resultScreenEl, cachedContext.screen);
+    setText(resultScreenValueEl, cachedContext.screen);
         setText(resultLanguagesEl, cachedContext.languages);
         setText(resultCoresEl, cachedContext.cores);
         setText(resultDntEl, cachedContext.dnt);
