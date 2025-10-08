@@ -28,10 +28,14 @@ const resultCoresEl = document.getElementById('result-cores');
 const resultDntEl = document.getElementById('result-dnt');
 const captureLogEl = document.getElementById('capture-log');
 
-const yearEl = document.getElementById('year');
-if (yearEl) {
-    yearEl.textContent = new Date().getFullYear().toString();
+function setText(el, value) {
+    if (!el) {
+        return;
+    }
+    el.textContent = value;
 }
+
+setText(document.getElementById('year'), new Date().getFullYear().toString());
 
 function resolveLanguages() {
     const langs = navigator.languages && navigator.languages.length ? navigator.languages : [navigator.language];
@@ -105,25 +109,13 @@ let cachedContext = {
     dnt: resolveDoNotTrack()
 };
 
-if (userAgentEl) {
-    userAgentEl.textContent = cachedContext.userAgent;
-}
+let contextReady = false;
 
-if (screenEl) {
-    screenEl.textContent = cachedContext.screen;
-}
-
-if (languagesEl) {
-    languagesEl.textContent = cachedContext.languages;
-}
-
-if (coresEl) {
-    coresEl.textContent = cachedContext.cores;
-}
-
-if (dntEl) {
-    dntEl.textContent = cachedContext.dnt;
-}
+setText(userAgentEl, cachedContext.userAgent);
+setText(screenEl, cachedContext.screen);
+setText(languagesEl, cachedContext.languages);
+setText(coresEl, cachedContext.cores);
+setText(dntEl, cachedContext.dnt);
 
 async function fetchJson(url, fallback) {
     try {
@@ -141,7 +133,7 @@ async function fetchJson(url, fallback) {
 async function collectContext() {
     const ipData = await fetchJson('https://api.ipify.org?format=json', { ip: 'Unavailable' });
     cachedContext.ip = ipData.ip || 'Unavailable';
-    ipAddressEl.textContent = cachedContext.ip;
+    setText(ipAddressEl, cachedContext.ip);
     appendCaptureLog(`Network request exposed public IP <span>${cachedContext.ip}</span>.`);
 
     const geoData = await fetchJson('https://ipapi.co/json/', {
@@ -156,13 +148,11 @@ async function collectContext() {
         .filter(Boolean)
         .join(', ');
     cachedContext.location = pieces || 'Unavailable';
-    locationEl.textContent = cachedContext.location;
+    setText(locationEl, cachedContext.location);
     appendCaptureLog(`Approximate location mapped to <span>${cachedContext.location}</span>.`);
 
     cachedContext.network = geoData.org || 'Unavailable';
-    if (networkEl) {
-        networkEl.textContent = cachedContext.network;
-    }
+    setText(networkEl, cachedContext.network);
     appendCaptureLog(`ISP / network provider identified as <span>${cachedContext.network}</span>.`);
 
     const fallbackTz = Intl.DateTimeFormat().resolvedOptions().timeZone;
@@ -183,33 +173,20 @@ async function collectContext() {
     }
     cachedContext.timezone = resolvedTz;
     cachedContext.timezoneDisplay = localTimeDisplay;
-    if (timezoneEl) {
-        timezoneEl.textContent = cachedContext.timezoneDisplay;
-    }
+    setText(timezoneEl, cachedContext.timezoneDisplay);
     appendCaptureLog(`Local time calculated as <span>${cachedContext.timezoneDisplay}</span>.`);
 
-    resultIpEl.textContent = cachedContext.ip;
-    resultLocationEl.textContent = cachedContext.location;
-    resultUserAgentEl.textContent = cachedContext.userAgent;
-    if (resultNetworkEl) {
-        resultNetworkEl.textContent = cachedContext.network;
-    }
-    if (resultTimezoneEl) {
-        resultTimezoneEl.textContent = cachedContext.timezoneDisplay;
-    }
-    if (resultScreenEl) {
-        resultScreenEl.textContent = cachedContext.screen;
-    }
-    if (resultLanguagesEl) {
-        resultLanguagesEl.textContent = cachedContext.languages;
-    }
-    if (resultCoresEl) {
-        resultCoresEl.textContent = cachedContext.cores;
-    }
-    if (resultDntEl) {
-        resultDntEl.textContent = cachedContext.dnt;
-    }
+    setText(resultIpEl, cachedContext.ip);
+    setText(resultLocationEl, cachedContext.location);
+    setText(resultUserAgentEl, cachedContext.userAgent);
+    setText(resultNetworkEl, cachedContext.network);
+    setText(resultTimezoneEl, cachedContext.timezoneDisplay);
+    setText(resultScreenEl, cachedContext.screen);
+    setText(resultLanguagesEl, cachedContext.languages);
+    setText(resultCoresEl, cachedContext.cores);
+    setText(resultDntEl, cachedContext.dnt);
     appendCaptureLog(`Device fingerprint assembled (screen, languages, cores, DNT).`);
+    contextReady = true;
 }
 
 function showSection(section) {
@@ -229,37 +206,32 @@ if (consentButton) {
 }
 
 if (phishForm) {
-    phishForm.addEventListener('submit', (event) => {
+    phishForm.addEventListener('submit', async (event) => {
         event.preventDefault();
+        if (!contextReady) {
+            await collectContext();
+        }
         const formData = new FormData(phishForm);
         const username = formData.get('email') || '(empty)';
         const password = formData.get('password') || '(empty)';
-        capturedUsernameEl.textContent = username;
-        capturedPasswordEl.textContent = password || '(empty)';
+        setText(capturedUsernameEl, username);
+        setText(capturedPasswordEl, password || '(empty)');
         appendCaptureLog(`Credentials harvested for <span>${username || 'anonymous user'}</span>.`);
 
-        resultIpEl.textContent = cachedContext.ip;
-        resultLocationEl.textContent = cachedContext.location;
-        if (resultNetworkEl) {
-            resultNetworkEl.textContent = cachedContext.network;
-        }
-        if (resultTimezoneEl) {
-            resultTimezoneEl.textContent = cachedContext.timezoneDisplay;
-        }
-        resultUserAgentEl.textContent = cachedContext.userAgent;
-        if (resultScreenEl) {
-            resultScreenEl.textContent = cachedContext.screen;
-        }
-        if (resultLanguagesEl) {
-            resultLanguagesEl.textContent = cachedContext.languages;
-        }
-        if (resultCoresEl) {
-            resultCoresEl.textContent = cachedContext.cores;
-        }
-        if (resultDntEl) {
-            resultDntEl.textContent = cachedContext.dnt;
-        }
+        setText(resultIpEl, cachedContext.ip);
+        setText(resultLocationEl, cachedContext.location);
+        setText(resultNetworkEl, cachedContext.network);
+        setText(resultTimezoneEl, cachedContext.timezoneDisplay);
+        setText(resultUserAgentEl, cachedContext.userAgent);
+        setText(resultScreenEl, cachedContext.screen);
+        setText(resultLanguagesEl, cachedContext.languages);
+        setText(resultCoresEl, cachedContext.cores);
+        setText(resultDntEl, cachedContext.dnt);
 
         showSection(resultScreen);
+        if (typeof resultScreen.scrollIntoView === 'function') {
+            resultScreen.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+        appendCaptureLog('Credentials transmitted to the attacker-controlled server endpoint.');
     });
 }

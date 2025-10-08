@@ -61,20 +61,18 @@ body {
 }
 
 .tagline {
-    margin-bottom: 1.5rem;
     font-weight: 500;
-    font-size: 0.9rem;
-    color: rgba(255, 255, 255, 0.85);
-
+    font-size: 1rem;
+    color: rgba(248, 250, 252, 0.92);
 }
 
 .leadership-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-    gap: 1.5rem;
+    gap: 2rem;
     justify-items: stretch;
     max-width: 960px;
-    margin: 0 auto;
+    margin: 20px auto;
 }
 
 .leader-card {
@@ -113,8 +111,8 @@ body {
 
 .leader-meta {
     margin: 0;
-    font-size: 0.9rem;
-    color: rgba(255, 255, 255, 0.85);
+    font-size: 0.95rem;
+    color: #e0f2fe;
 }
 
 main {
@@ -131,11 +129,12 @@ main {
     margin-bottom: 2rem;
     box-shadow: var(--shadow);
     transition: transform 0.25s ease, box-shadow 0.25s ease;
+    transform: translateY(-2px);
 }
 
 .card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 18px 30px -20px rgba(15, 23, 42, 0.35);
+    transform: translateY(-8px);
+    box-shadow: 0 20px 40px -22px rgba(15, 23, 42, 0.35);
 }
 
 .hidden {
@@ -168,6 +167,7 @@ a.secondary {
     padding: 0.85rem 1.75rem;
     cursor: pointer;
     text-decoration: none;
+    margin: 20px;
     transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
