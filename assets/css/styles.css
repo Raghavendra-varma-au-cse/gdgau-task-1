@@ -138,7 +138,7 @@ main {
 }
 
 .hidden {
-    display: none;
+    display: none !important;
 }
 
 h2 {
