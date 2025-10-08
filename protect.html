@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How to Protect Yourself | GDGoC Andhra University</title>
+    <link rel="stylesheet" href="assets/css/styles.css">
+</head>
+<body>
+    <header class="site-header">
+        <div class="branding">
+            <h1>Stay Safe from Phishing</h1>
+            <p class="tagline">Prepared by the Cybersecurity Domain of GDGoC Andhra University.</p>
+
+            <div class="leadership-grid" role="group" aria-label="Cybersecurity Domain Leads">
+                <article class="leader-card" aria-label="Lead profile">
+                    <span class="leader-role">Lead</span>
+                    <h2 class="leader-name">Dandu S N Venkata Pavan Raghavendra Varma</h2>
+                    <p class="leader-meta">Cybersecurity Domain &mdash; GDGoC Andhra University</p>
+                </article>
+                <article class="leader-card" aria-label="Co-Lead profile">
+                    <span class="leader-role">Co-Lead</span>
+                    <h2 class="leader-name">Sriharsha Meduri</h2>
+                    <p class="leader-meta">Cybersecurity Domain &mdash; GDGoC Andhra University</p>
+                </article>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <section class="card">
+            <h2>Key Takeaways from the Simulation</h2>
+            <ul class="info-list">
+                <li>Attackers can capture information you type into fake forms in real time.</li>
+                <li>Your IP address and approximate location are exposed the moment you land on a site.</li>
+                <li>Browser and operating system fingerprints help attackers tailor their exploits.</li>
+            </ul>
+        </section>
+
+        <section class="card">
+            <h2>How to Protect Yourself</h2>
+            <ol>
+                <li><strong>Inspect the URL carefully.</strong> Look for misspellings, unusual domains, or HTTP instead of HTTPS.</li>
+                <li><strong>Verify unexpected requests.</strong> Contact the sender through a trusted channel before clicking links.</li>
+                <li><strong>Use Multi-Factor Authentication (MFA).</strong> Even if a password leaks, MFA can stop the attacker.</li>
+                <li><strong>Beware of urgency and fear tactics.</strong> Attackers often demand immediate action.</li>
+                <li><strong>Keep software updated.</strong> Patched systems reduce exploit opportunities.</li>
+                <li><strong>Report suspicious emails.</strong> Use your organization&rsquo;s reporting tools or security team.</li>
+                <li><strong>Use password managers.</strong> They autofill only on legitimate sites.</li>
+            </ol>
+        </section>
+
+        <section class="card share-card">
+            <h2>Share the Knowledge</h2>
+            <p>Training others to spot the signs of phishing is a critical defense. Share this simulation, talk about what surprised you, and tackle the mini challenge below.</p>
+
+            <div class="challenge">
+                <h3>Community Challenge: Trace the Breadcrumbs</h3>
+                <p class="muted">Use digital sleuthing skills to uncover the congratulatory surprise prepared for you.</p>
+                <ol class="challenge-list">
+                    <li><strong>Step 1:</strong> Visit <a href="https://www.linkedin.com/in/raghavendravarma/" target="_blank" rel="noopener">Raghavendra Varma&rsquo;s LinkedIn profile</a> and look for the featured cybersecurity repository link.</li>
+                    <li><strong>Step 2:</strong> Explore the linked GitHub project. Inspect hidden or dot-prefixed files &mdash; one of them contains an encoded hash just for this training cohort.</li>
+                    <li><strong>Step 3:</strong> Decode the hash (hint: it resembles Base64). Submit the revealed phrase to unlock the surprise message.</li>
+                </ol>
+                <p class="muted">Bonus hint: attackers hide payloads in plain sight. Use the browser dev tools or git history to surface the secret file if you don&rsquo;t see it immediately.</p>
+
+                <form id="decode-form" class="decode-form" autocomplete="off">
+                    <label for="decoded-phrase">Submit your decoded phrase to reveal the surprise:</label>
+                    <div class="decode-input-row">
+                        <input type="text" id="decoded-phrase" name="decoded-phrase" placeholder="Paste the decoded phrase here" required>
+                        <button type="submit" class="primary">Submit Phrase</button>
+                    </div>
+                    <p id="decode-feedback" class="decode-feedback muted">Paste the decoded message exactly as you found it.</p>
+                </form>
+            </div>
+
+            <a class="secondary" href="index.html">Restart the Simulation</a>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <p>&copy; <span id="year"></span> GDGoC Andhra University &mdash; Cybersecurity Domain.</p>
+    </footer>
+
+    <script>
+        (function () {
+            const yearEl = document.getElementById('year');
+            if (yearEl) {
+                yearEl.textContent = new Date().getFullYear().toString();
+            }
+
+            const decodeForm = document.getElementById('decode-form');
+            if (!decodeForm) {
+                return;
+            }
+
+            const decodeInput = document.getElementById('decoded-phrase');
+            const feedbackEl = document.getElementById('decode-feedback');
+            const targetPhrase = 'Welcome to the GDGoC AU Cybersecurity';
+
+            function setFeedback(message, state) {
+                if (!feedbackEl) {
+                    return;
+                }
+                feedbackEl.textContent = message;
+                feedbackEl.classList.remove('muted', 'success', 'error');
+                if (state === 'success') {
+                    feedbackEl.classList.add('decode-feedback', 'success');
+                } else if (state === 'error') {
+                    feedbackEl.classList.add('decode-feedback', 'error');
+                } else {
+                    feedbackEl.classList.add('muted');
+                }
+            }
+
+            decodeForm.addEventListener('submit', (event) => {
+                event.preventDefault();
+                const value = (decodeInput.value || '').trim();
+                if (!value) {
+                    setFeedback('Please paste the decoded phrase before submitting.', 'error');
+                    decodeInput.focus();
+                    return;
+                }
+
+                const matches = value.localeCompare(targetPhrase, undefined, {
+                    sensitivity: 'accent',
+                    usage: 'search'
+                }) === 0;
+
+                if (matches) {
+                    setFeedback('Success! Welcome to the GDGoC AU Cybersecurity — keep exploring, investigator.', 'success');
+                } else {
+                    setFeedback('That doesn’t match the hidden message yet. Double-check your decoding steps and try again.', 'error');
+                }
+            });
+        }());
+    </script>
+</body>
+</html>

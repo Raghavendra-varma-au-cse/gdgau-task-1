@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulated Phishing Training | GDGoC Andhra University</title>
+    <link rel="stylesheet" href="assets/css/styles.css">
+</head>
+<body>
+    <header class="site-header">
+        <div class="branding">
+            <h1>GDGoC Andhra University Cybersecurity</h1>
+            <p class="tagline">Simulated phishing awareness experience for safer clicks.</p>
+
+            <div class="leadership-grid" role="group" aria-label="Cybersecurity Domain Leads">
+                <article class="leader-card" aria-label="Lead profile">
+                    <span class="leader-role">Lead</span>
+                    <h2 class="leader-name">Dandu S N Venkata Pavan Raghavendra Varma</h2>
+                    <p class="leader-meta">Cybersecurity Domain &mdash; GDGoC Andhra University</p>
+                </article>
+                <article class="leader-card" aria-label="Co-Lead profile">
+                    <span class="leader-role">Co-Lead</span>
+                    <h2 class="leader-name">Sriharsha Meduri</h2>
+                    <p class="leader-meta">Cybersecurity Domain &mdash; GDGoC Andhra University</p>
+                </article>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <section id="consent-screen" class="card">
+            <h2>Consent Required</h2>
+            <p class="consent-text">You&rsquo;re about to visit a <strong>simulated phishing page</strong> as part of this training. By clicking continue you consent to letting us temporarily display your IP and browser details strictly for this exercise. Nothing is stored.</p>
+            <button id="consent-button" class="primary">I Understand &amp; Consent</button>
+        </section>
+
+        <section id="collection-screen" class="card hidden" aria-hidden="true">
+            <h2>Step 1: What an attacker sees instantly</h2>
+            <p>Below is information that can be gathered the moment you load a malicious page &mdash; no clicks required.</p>
+            <div class="info-grid">
+                <div>
+                    <h3>Your Public IP</h3>
+                    <p id="ip-address" class="info-value">Fetching&hellip;</p>
+                </div>
+                <div>
+                    <h3>Approximate Location</h3>
+                    <p id="location" class="info-value">Fetching&hellip;</p>
+                </div>
+                <div>
+                    <h3>Browser &amp; OS</h3>
+                    <p id="user-agent" class="info-value"></p>
+                </div>
+                <div>
+                    <h3>Network Provider</h3>
+                    <p id="network" class="info-value">Fetching&hellip;</p>
+                </div>
+                <div>
+                    <h3>Time Zone &amp; Local Time</h3>
+                    <p id="timezone" class="info-value">Calculating&hellip;</p>
+                </div>
+                <div>
+                    <h3>Device Fingerprint</h3>
+                    <ul class="info-list compact">
+                        <li><strong>Screen:</strong> <span id="screen"></span></li>
+                        <li><strong>Languages:</strong> <span id="languages"></span></li>
+                        <li><strong>CPU Cores:</strong> <span id="cores"></span></li>
+                        <li><strong>Do Not Track:</strong> <span id="dnt"></span></li>
+                    </ul>
+                </div>
+            </div>
+
+            <section class="login-sim">
+                <h2>Step 2: The bait</h2>
+                <p>Enter dummy credentials to continue. This is a safe simulation &mdash; enter anything you like to see what would be transmitted.</p>
+                <form id="phish-form">
+                    <label for="email">Email or Username</label>
+                    <input type="text" id="email" name="email" autocomplete="off" required>
+
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" autocomplete="off" required>
+
+                    <button type="submit" class="primary">Sign in</button>
+                </form>
+            </section>
+        </section>
+
+        <section id="result-screen" class="card hidden" aria-hidden="true">
+            <h2>What a phisher could capture</h2>
+            <p class="warning">An attacker could have recorded everything below the moment you clicked submit, including the exact password characters and live device fingerprint.</p>
+            <div class="info-grid">
+                <div>
+                    <h3>Typed Username</h3>
+                    <p id="captured-username" class="info-value"></p>
+                </div>
+                <div>
+                    <h3>Typed Password (displayed for training)</h3>
+                    <p id="captured-password" class="info-value"></p>
+                </div>
+                <div>
+                    <h3>Network Footprint</h3>
+                    <ul class="info-list">
+                        <li><strong>Public IP:</strong> <span id="result-ip"></span></li>
+                        <li><strong>Location:</strong> <span id="result-location"></span></li>
+                        <li><strong>Provider:</strong> <span id="result-network"></span></li>
+                        <li><strong>Time Zone:</strong> <span id="result-timezone"></span></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3>Device Fingerprint</h3>
+                    <ul class="info-list">
+                        <li><strong>Browser &amp; OS:</strong> <span id="result-user-agent"></span></li>
+                        <li><strong>Screen:</strong> <span id="result-screen"></span></li>
+                        <li><strong>Languages:</strong> <span id="result-languages"></span></li>
+                        <li><strong>CPU Cores:</strong> <span id="result-cores"></span></li>
+                        <li><strong>Do Not Track:</strong> <span id="result-dnt"></span></li>
+                    </ul>
+                </div>
+            </div>
+
+            <section class="capture-log">
+                <h3>Simulated Attack Log</h3>
+                <ul id="capture-log" class="info-list timeline" data-empty="true" aria-live="polite">
+                    <li class="muted">Waiting for attacker activity&hellip;</li>
+                </ul>
+            </section>
+
+            <a id="defense-link" class="secondary" href="protect.html">Continue to How to Protect Yourself</a>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <p>&copy; <span id="year"></span> GDGoC Andhra University &mdash; Cybersecurity Domain.</p>
+        <p class="disclaimer">Training demo only. No personal data is stored or transmitted to our servers.</p>
+    </footer>
+
+    <script src="assets/js/script.js" defer></script>
+</body>
+</html>
